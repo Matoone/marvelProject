@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Grid, Row } from "react-flexbox-grid";
+import "ui-neumorphism/dist/index.css";
+import "./App.css";
+import TopBar from "./components/TopBar";
+import CharacterCard from "./components/CharacterCard";
 
+const chars = [
+  { name: "GI-Joe", image: "" },
+  { name: "Lala", image: "" },
+
+  { name: "Trululu", image: "" },
+  { name: "Trululu", image: "" },
+  { name: "Trululu", image: "" },
+  { name: "Trululu", image: "" },
+  { name: "Trululu", image: "" },
+  { name: "Trululu", image: "" },
+];
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+    <Grid fluid>
+      <TopBar />
+      <div className="Container">
+        {chars.map((character) => (
+          <CharacterCard name={character.name} />
+        ))}
+      </div>
+
+      <footer style={{ position: "fixed", bottom: 0, right: 0, padding: 20 }}>
+        Repo git de l'auteur:
+        <a href="https://github.com/Matoone" target="_blank" rel="noreferrer">
+          https://github.com/Matoone
         </a>
-      </header>
-    </div>
+      </footer>
+    </Grid>
   );
 }
 
