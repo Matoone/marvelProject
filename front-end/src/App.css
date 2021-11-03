@@ -43,7 +43,8 @@ footer {
 }
 
 .Card {
-  max-width: 300px;
+  max-width: 400px;
+  max-height: 600px;
   margin-top: 3em;
 }
 
@@ -52,6 +53,17 @@ footer {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+.CharacterImage {
+  height: 400px;
+}
+
+li {
+  list-style-type: none;
+}
+
+.Hoverable {
+  cursor: pointer;
 }
 /* * {
   box-sizing: border-box;
