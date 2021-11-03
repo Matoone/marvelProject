@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+
+body,
+footer {
+  background-color: var(--light-bg);
+}
+
+.Card {
+  max-width: 400px;
+  max-height: 600px;
+  margin-top: 3em;
+}
+
+.Container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.CharacterImage {
+  height: 400px;
+}
+
+li {
+  list-style-type: none;
+}
+
+.Hoverable {
+  cursor: pointer;
+}
+/* * {
+  box-sizing: border-box;
+} */

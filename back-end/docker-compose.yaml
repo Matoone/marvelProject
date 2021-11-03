@@ -1,0 +1,46 @@
+version: '3'
+services:
+  hp-back-end:
+    build:
+      context: .
+      dockerfile: Dockerfile.node.dev
+      args:
+        - NODE_ENV=development
+        - DATABASE_URL=postgresql://postgres:postgres@db:5432/my_app_db
+        - DATABASE_URL_TEST=postgresql://postgres:postgres@db:5432/my_app_db_test
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - '4000:4000'
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    healthcheck:
+      disable: true
+  db:
+    build:
+      dockerfile: Dockerfile.db.dev
+    restart: always
+    volumes:
+      - /Users/matthieudegre/Documents/dev/hp/db_dump:/var/lib/postgresql/data
+    ports:
+      - '15432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db

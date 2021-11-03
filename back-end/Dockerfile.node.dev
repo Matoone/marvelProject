@@ -1,0 +1,17 @@
+FROM node:16-buster as hp-back-end
+# set database connection string
+ARG DATABASE_URL
+ARG DATABASE_URL_TEST
+ENV DATABASE_URL $DATABASE_URL
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+# Install dependencies
+COPY package.json ./
+RUN npm install --global knex
+RUN npm install
+# Bundle app source
+COPY . .
+# Exports
+EXPOSE 4000
+CMD npm run dev
