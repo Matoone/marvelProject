@@ -3,6 +3,8 @@ require('dotenv').config();
 
 import md5 from 'md5';
 import { Identity } from '../config/buildingBlocks/identity';
+import { MarvelAPIService } from '../config/container';
+import { Character, Comic } from '../graphql/generated/types';
 
 enum MarvelSlugs {
   characters = 'characters',
@@ -16,17 +18,21 @@ interface Payload {
   hash: string;
 }
 
-interface CharacterResult {
-  id: string;
-  name: string;
-  image: {
-    url: string;
-    extension: string;
-  };
-  description?: string;
-}
+// interface CharacterResult {
+//   id: string;
+//   name: string;
+//   image: {
+//     url: string;
+//     extension: string;
+//   };
+//   comics: {
+//     appearances: number;
+//     items: ComicResult[];
+//   };
+//   description?: string;
+// }
 
-function toCharacter(characterData: any): CharacterResult {
+function toCharacter(characterData: any): Character {
   return {
     id: characterData.id!,
     name: characterData.name!,
@@ -34,19 +40,23 @@ function toCharacter(characterData: any): CharacterResult {
       url: characterData.thumbnail.path!,
       extension: characterData.thumbnail.extension!
     },
+    comics: {
+      appearances: characterData.comics?.available,
+      items: characterData.comics?.items?.map(toComic) ?? []
+    },
     description: characterData.description
   };
 }
 
-interface ComicResult {
-  id: string;
-  title: string;
-}
+// interface ComicResult {
+//   id: string;
+//   title: string;
+// }
 
-function toComic(comicData: any): ComicResult {
+function toComic(comicData: any): Comic {
+  console.log(comicData);
   return {
-    id: comicData.id!,
-    title: comicData.title!
+    name: comicData.name!
   };
 }
 
@@ -75,12 +85,9 @@ const buildUrl = (slug: string, payload: Payload): string => {
   return `${baseUrl}/${slug}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 };
 
-export default function marvelAPIService() {
+export default function marvelAPIService(): MarvelAPIService {
   return {
-    getCharacters: async (
-      offset = 99,
-      limit = 20
-    ): Promise<CharacterResult[]> => {
+    getCharacters: async (offset = 99, limit = 20): Promise<Character[]> => {
       const url = buildUrl(MarvelSlugs.characters, buildPayload());
       const res = await axios
         .get(`${url}&offset=${offset}&limit=${limit}`)
@@ -90,12 +97,12 @@ export default function marvelAPIService() {
         });
 
       const results = res.data!.data!.results;
-      const characters: CharacterResult[] = results.map(toCharacter);
+      const characters: Character[] = results.map(toCharacter);
       console.log(characters);
       return characters;
     },
 
-    getCharacter: async (id: string): Promise<CharacterResult> => {
+    getCharacter: async (id: string): Promise<Character> => {
       const url = buildUrl(
         MarvelSlugs.character.replace(':characterId', id),
         buildPayload()
@@ -108,26 +115,23 @@ export default function marvelAPIService() {
       const result = res.data!.data!.results[0];
 
       return toCharacter(result);
-    },
-
-    getComics: async (
-      characterId: string,
-      limit = 3
-    ): Promise<ComicResult[]> => {
-      const url = buildUrl(
-        MarvelSlugs.characterComics.replace(':characterId', characterId),
-        buildPayload()
-      );
-      const res = await axios.get(`${url}&limit=${limit}`).catch((error) => {
-        console.log(error);
-        throw error;
-      });
-      console.log('getComicsRes', res);
-
-      const results = res.data!.data!.results;
-      const comics: ComicResult[] = results.map(toComic);
-
-      return comics;
     }
+
+    // getComics: async (characterId: string, limit = 3): Promise<Comic[]> => {
+    //   const url = buildUrl(
+    //     MarvelSlugs.characterComics.replace(':characterId', characterId),
+    //     buildPayload()
+    //   );
+    //   const res = await axios.get(`${url}&limit=${limit}`).catch((error) => {
+    //     console.log(error);
+    //     throw error;
+    //   });
+    //   console.log('getComicsRes', res);
+
+    //   const results = res.data!.data!.results;
+    //   const comics: Comic[] = results.map(toComic);
+
+    //   return comics;
+    // }
   };
 }

@@ -33,12 +33,17 @@ const typeDefs = gql`
     id: ID!
     name: String!
     image: ImageResult!
-    comics: [Comic!]
+    comics: ComicsData
+    description: String
+  }
+
+  type ComicsData {
+    appearances: Int
+    items: [Comic!]
   }
 
   type Comic {
-    id: ID!
-    title: String!
+    name: String!
   }
 
   type ImageResult {

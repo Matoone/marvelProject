@@ -3,7 +3,7 @@
 import { ValidationError } from 'apollo-server-core';
 import { GraphQLScalarType } from 'graphql';
 import { Resolvers } from '../generated/types';
-import marvelAPIService from '../../services/marvelAPIService';
+import { MyContainer } from '../../config/container';
 
 // A map of functions which return data for the schema.
 const resolvers: Resolvers = {
@@ -23,22 +23,22 @@ const resolvers: Resolvers = {
   }),
   Query: {
     hello: () => 'world',
-    getUser: (_, { id }, { userService }) => userService.getUser(id),
-    getUsers: (_, { ids }, { userService }) => userService.getUsers(ids),
-    characters: (_, __, { marvelAPIService }) =>
-      marvelAPIService.getCharacters(),
-    character: (_, { id }, { marvelAPIService }) => {
+    getUser: (_, { id }, ctx: MyContainer) => ctx.userService.getUser(id),
+    getUsers: (_, { ids }, ctx: MyContainer) => ctx.userService.getUsers(ids),
+    characters: (_, __, ctx: MyContainer) =>
+      ctx.marvelAPIService.getCharacters(),
+    character: (_, { id }, ctx: MyContainer) => {
       console.log('id', id);
-      return marvelAPIService.getCharacter(id);
+      return ctx.marvelAPIService.getCharacter(id);
     }
   },
   Mutation: {
-    addUser: (_, { userInput }, { userService }) =>
-      userService.addUser(userInput)
-  },
-  Character: {
-    comics: ({ id }, _, { marvelAPIService }) => marvelAPIService.getComics(id)
+    addUser: (_, { userInput }, ctx: MyContainer) =>
+      ctx.userService.addUser(userInput)
   }
+  // Character: {
+  //   comics: ({ id }, _, { marvelAPIService }) => marvelAPIService.getComics(id)
+  // }
 };
 
 export default resolvers;

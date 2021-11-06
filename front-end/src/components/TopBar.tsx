@@ -15,8 +15,9 @@ const TopBar = () => {
 
       <Col style={{ padding: 20 }} xs={4}>
         <Row around="xs">
-          <Button onClick={() => {}}>S'inscrire</Button>
-          <Button onClick={() => {}}>Se connecter</Button>
+          <Button onClick={() => {}}>Signup</Button>
+          <Button onClick={() => {}}>Signin</Button>
+          <Button onClick={() => history.push("/squad")}>Squad</Button>
         </Row>
       </Col>
     </Row>

@@ -22,9 +22,12 @@ const getCharacterDetails = gql`
         url
         extension
       }
+      description
       comics {
-        id
-        title
+        appearances
+        items {
+          name
+        }
       }
     }
   }
