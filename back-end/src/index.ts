@@ -4,7 +4,7 @@ import { ApolloServer } from 'apollo-server-express';
 
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
-import container from './config/container';
+import { container } from './config/container';
 
 require('dotenv').config();
 

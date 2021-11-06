@@ -1,22 +1,9 @@
 import { Row } from "react-flexbox-grid";
 import { Link, Route, useHistory } from "react-router-dom";
 import { buildImageUrl, CharacterImageData } from "../utils/buildImageUrl";
-import {
-  Body2,
-  Button,
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  H5,
-  H6,
-  IconButton,
-  Spacer,
-  Subtitle2,
-} from "ui-neumorphism";
+import { Card, CardHeader, CardMedia, H6, Subtitle2 } from "ui-neumorphism";
 
-interface Character {
+export interface Character {
   id: string;
   name: string;
   imageUrl: CharacterImageData;

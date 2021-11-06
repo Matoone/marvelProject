@@ -1,85 +1,32 @@
-import { useState, useEffect } from "react";
-import { Grid, Row } from "react-flexbox-grid";
+import { Grid } from "react-flexbox-grid";
 import "ui-neumorphism/dist/index.css";
 import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import TopBar from "./components/TopBar";
-import CharacterCard from "./components/CharacterCard";
-import CharacterDetails from "./components/CharacterDetails";
-import { getCharacters } from "./queries";
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useHistory,
-} from "react-router-dom";
-import { buildImageUrl } from "./utils";
-
-// const chars = [
-//   { name: "GI-Joe", image: "" },
-//   { name: "Lala", image: "" },
-
-//   { name: "Trululu", image: "" },
-//   { name: "Trululu", image: "" },
-//   { name: "Trululu", image: "" },
-//   { name: "Trululu", image: "" },
-//   { name: "Trululu", image: "" },
-//   { name: "Trululu", image: "" },
-// ];
-enum ImageResolutions {
-  portraitSmall = "portrait_small",
-  portraitMedium = "portrait_medium",
-  portraitXLarge = "portrait_xlarge",
-  portraitFantastic = "portrait_fantastic",
-  portraitUncanny = "portrait_uncanny",
-  portraitIncredible = "portrait_incredible",
-}
+import CharacterDetails from "./pages/CharacterDetails";
+import Squad from "./pages/Squad";
+import Home from "./pages/Home";
 
 function App() {
-  const { loading, error, data } = useQuery(getCharacters);
-  const history = useHistory();
-
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div>{`Error! ${error.message}`}</div>;
-
   return (
     <Router>
       <Grid fluid>
         <TopBar />
         <Switch>
           <Route exact path="/">
-            {loading ? (
-              <div>Loading...</div>
-            ) : error ? (
-              <div>{`Error! ${error.message}`}</div>
-            ) : (
-              <div className="Container">
-                {
-                  // console.log('data', data)
-                  data.characters.map((character: any) => (
-                    <CharacterCard
-                      character={{
-                        id: character.id,
-                        name: character.name,
-                        imageUrl: character.image,
-                      }}
-                    />
-                  ))
-                }
-              </div>
-            )}
+            <Home />
           </Route>
           <Route path="/characters/:id">
-            <CharacterDetails></CharacterDetails>
+            <CharacterDetails />
+          </Route>
+          <Route path="/squad">
+            <DndProvider backend={HTML5Backend}>
+              <Squad />
+            </DndProvider>
           </Route>
         </Switch>
 

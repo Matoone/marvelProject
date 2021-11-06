@@ -16,7 +16,8 @@ export type Scalars = {
 
 export type Character = {
   __typename?: 'Character';
-  comics?: Maybe<Array<Comic>>;
+  comics?: Maybe<ComicsData>;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   image: ImageResult;
   name: Scalars['String'];
@@ -24,8 +25,13 @@ export type Character = {
 
 export type Comic = {
   __typename?: 'Comic';
-  id: Scalars['ID'];
-  title: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type ComicsData = {
+  __typename?: 'ComicsData';
+  appearances?: Maybe<Scalars['Int']>;
+  items?: Maybe<Array<Comic>>;
 };
 
 export type ImageResult = {
@@ -156,9 +162,11 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Character: ResolverTypeWrapper<Character>;
   Comic: ResolverTypeWrapper<Comic>;
+  ComicsData: ResolverTypeWrapper<ComicsData>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   ImageResult: ResolverTypeWrapper<ImageResult>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -171,9 +179,11 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Character: Character;
   Comic: Comic;
+  ComicsData: ComicsData;
   Date: Scalars['Date'];
   ID: Scalars['ID'];
   ImageResult: ImageResult;
+  Int: Scalars['Int'];
   Mutation: {};
   Query: {};
   String: Scalars['String'];
@@ -182,7 +192,8 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type CharacterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Character'] = ResolversParentTypes['Character']> = ResolversObject<{
-  comics?: Resolver<Maybe<Array<ResolversTypes['Comic']>>, ParentType, ContextType>;
+  comics?: Resolver<Maybe<ResolversTypes['ComicsData']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['ImageResult'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -190,8 +201,13 @@ export type CharacterResolvers<ContextType = any, ParentType extends ResolversPa
 }>;
 
 export type ComicResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comic'] = ResolversParentTypes['Comic']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ComicsDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ComicsData'] = ResolversParentTypes['ComicsData']> = ResolversObject<{
+  appearances?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  items?: Resolver<Maybe<Array<ResolversTypes['Comic']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -229,6 +245,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = ResolversObject<{
   Character?: CharacterResolvers<ContextType>;
   Comic?: ComicResolvers<ContextType>;
+  ComicsData?: ComicsDataResolvers<ContextType>;
   Date?: GraphQLScalarType;
   ImageResult?: ImageResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

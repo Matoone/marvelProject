@@ -8,3 +8,6 @@ generates:
       - typescript-resolvers
     config:
       useIndexSignature: true
+  src/graphql/generated/graphql.schema.json:
+    plugins:
+      - 'introspection'
