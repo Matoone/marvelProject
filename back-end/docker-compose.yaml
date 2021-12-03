@@ -9,7 +9,8 @@ services:
         - DATABASE_URL=postgresql://postgres:postgres@db:5432/my_app_db
         - DATABASE_URL_TEST=postgresql://postgres:postgres@db:5432/my_app_db_test
     volumes:
-      - ./:/usr/src/app
+      - ./src:/usr/src/app/src
+      - ./nodemon.json:/usr/src/app/nodemon.json
     ports:
       - '4000:4000'
     depends_on:
@@ -19,12 +20,14 @@ services:
       - db
     healthcheck:
       disable: true
+    command: npm run dev
   db:
     build:
+      context: .
       dockerfile: Dockerfile.db.dev
     restart: always
     volumes:
-      - /Users/matthieudegre/Documents/dev/hp/db_dump:/var/lib/postgresql/data
+      - ./db_dump:/var/lib/postgresql/data
     ports:
       - '15432:5432'
     environment:
@@ -36,7 +39,6 @@ services:
       start_period: 10s
       timeout: 4s
       retries: 3
-
   adminer:
     image: adminer
     restart: always

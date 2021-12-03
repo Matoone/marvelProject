@@ -1,5 +1,3 @@
-//import { userRepository } from '../../data';
-//import { userService } from '../../services';
 import { ValidationError } from 'apollo-server-core';
 import { GraphQLScalarType } from 'graphql';
 import { Resolvers } from '../generated/types';
@@ -23,22 +21,25 @@ const resolvers: Resolvers = {
   }),
   Query: {
     hello: () => 'world',
-    getUser: (_, { id }, ctx: MyContainer) => ctx.userService.getUser(id),
-    getUsers: (_, { ids }, ctx: MyContainer) => ctx.userService.getUsers(ids),
-    characters: (_, __, ctx: MyContainer) =>
-      ctx.marvelAPIService.getCharacters(),
-    character: (_, { id }, ctx: MyContainer) => {
-      console.log('id', id);
+    getUser: (_, { id }, { ctx }: { ctx: MyContainer }) =>
+      ctx.userService.getUser(id),
+    getUsers: (_, { ids }, { ctx }: { ctx: MyContainer }) =>
+      ctx.userService.getUsers(ids),
+    characters: (_, { offset, limit }, { ctx }: { ctx: MyContainer }) =>
+      ctx.marvelAPIService.getCharacters(offset, limit),
+    character: (_, { id }, { ctx }: { ctx: MyContainer }) => {
       return ctx.marvelAPIService.getCharacter(id);
+    },
+    gameCharacters: (_, __, ___) => {
+      throw new Error('Not yet implemented');
     }
   },
   Mutation: {
-    addUser: (_, { userInput }, ctx: MyContainer) =>
-      ctx.userService.addUser(userInput)
+    signup: (_, { userInput }, { ctx }: { ctx: MyContainer }) =>
+      ctx.userService.signup(userInput),
+    signin: (_, { userInput }, { ctx }: { ctx: MyContainer }) =>
+      ctx.userService.signin(userInput)
   }
-  // Character: {
-  //   comics: ({ id }, _, { marvelAPIService }) => marvelAPIService.getComics(id)
-  // }
 };
 
 export default resolvers;

@@ -7,24 +7,32 @@ const typeDefs = gql`
     hello: String!
     getUser(id: ID!): User!
     getUsers(ids: [ID!]!): [User!]!
-    characters: [Character!]!
+    characters(offset: Int!, limit: Int!): CharactersResponse!
     character(id: ID!): Character!
+    gameCharacters(userId: ID!): [GameCharacter!]!
   }
 
   type Mutation {
-    addUser(userInput: UserInput!): ID!
+    signup(userInput: UserInput!): UserWithToken!
+    signin(userInput: UserInput!): UserWithToken!
   }
 
   type User {
     id: ID!
-    name: String!
     email: String!
     createdAt: Date!
     updatedAt: Date!
   }
 
+  type UserWithToken {
+    id: ID!
+    email: String!
+    createdAt: Date!
+    updatedAt: Date!
+    token: String!
+  }
+
   input UserInput {
-    name: String!
     email: String!
     password: String!
   }
@@ -49,6 +57,24 @@ const typeDefs = gql`
   type ImageResult {
     url: String!
     extension: String!
+  }
+
+  type Stats {
+    xp: Int!
+    hp: Int!
+    tire: Int!
+  }
+
+  type GameCharacter {
+    id: ID!
+    name: String!
+    image: ImageResult!
+    stats: Stats!
+  }
+
+  type CharactersResponse {
+    characters: [Character!]!
+    hasMore: Boolean!
   }
 `;
 

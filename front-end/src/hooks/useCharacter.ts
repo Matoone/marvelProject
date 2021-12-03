@@ -60,7 +60,7 @@ export function useCharacter({
   }, frameDuration);
 
   // This function handles changing character activity
-  // It cut the current loop by replacing with the new one
+  // It cuts the current loop by replacing with the new one
   async function action(newStatus: Status) {
     setLoopState({
       status: Status.move, // It will first set moving status

@@ -7,19 +7,30 @@
 // GraphQL query operation: getCharacters
 // ====================================================
 
-export interface getCharacters_characters_image {
+export interface getCharacters_characters_characters_image {
   __typename: "ImageResult";
   url: string;
   extension: string;
 }
 
-export interface getCharacters_characters {
+export interface getCharacters_characters_characters {
   __typename: "Character";
   id: string;
   name: string;
-  image: getCharacters_characters_image;
+  image: getCharacters_characters_characters_image;
+}
+
+export interface getCharacters_characters {
+  __typename: "CharactersResponse";
+  hasMore: boolean;
+  characters: getCharacters_characters_characters[];
 }
 
 export interface getCharacters {
-  characters: getCharacters_characters[];
+  characters: getCharacters_characters;
+}
+
+export interface getCharactersVariables {
+  offset: number;
+  limit: number;
 }

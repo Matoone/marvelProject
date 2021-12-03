@@ -8,7 +8,37 @@ import { CharacterWithPlace, Place } from "../types/gameTypes";
 
 const baseSquadMembers = [
   {
-    id: "1234",
+    id: "1",
+    name: "Joe",
+    imageUrl: {
+      url: "http://truc.com",
+      extension: "jpg",
+    },
+
+    place: Place.Home,
+  },
+  {
+    id: "2",
+    name: "Joe",
+    imageUrl: {
+      url: "http://truc.com",
+      extension: "jpg",
+    },
+
+    place: Place.Home,
+  },
+  {
+    id: "3",
+    name: "Joe",
+    imageUrl: {
+      url: "http://truc.com",
+      extension: "jpg",
+    },
+
+    place: Place.Home,
+  },
+  {
+    id: "4",
     name: "Joe",
     imageUrl: {
       url: "http://truc.com",
@@ -19,6 +49,16 @@ const baseSquadMembers = [
   },
   {
     id: "12345",
+    name: "Joe",
+    imageUrl: {
+      url: "http://truc.com",
+      extension: "jpg",
+    },
+
+    place: Place.Home,
+  },
+  {
+    id: "5",
     name: "Joe",
     imageUrl: {
       url: "http://truc.com",
@@ -40,7 +80,7 @@ export default function Squad() {
           <H4 style={{ textAlign: "center" }}>Characters</H4>
           <Col style={{ minHeight: 200 }} className="PlaceContainer">
             {squadMembers.map((member) => (
-              <GameCharacterCard character={member} />
+              <GameCharacterCard character={member} key={member.id} />
             ))}
           </Col>
         </Col>

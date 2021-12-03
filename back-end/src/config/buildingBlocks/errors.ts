@@ -1,19 +1,4 @@
 /**
- * Représente une erreur au sens métier. Cela nous permet de bien différencier des
- * erreurs d'infra des erreurs "attendues" par le métier.
- */
-export class DomainError extends Error {
-  public static readonly DEFAULT_CODE = 'DOMAIN_ERROR';
-
-  constructor(
-    message: string,
-    public readonly code: string = DomainError.DEFAULT_CODE
-  ) {
-    super(message);
-  }
-}
-
-/**
  * Représente un élement non trouvé.
  */
 export class NotFound<T> extends Error {

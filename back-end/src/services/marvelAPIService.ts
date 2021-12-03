@@ -1,10 +1,21 @@
 import axios from 'axios';
 require('dotenv').config();
-
 import md5 from 'md5';
-import { Identity } from '../config/buildingBlocks/identity';
-import { MarvelAPIService } from '../config/container';
-import { Character, Comic } from '../graphql/generated/types';
+
+import { Character, CharactersResponse } from '../graphql/generated/types';
+import {
+  CharacterFromApiData,
+  GetCharactersApiResponse,
+  toCharacter
+} from '../model';
+
+export interface MarvelAPIService {
+  getCharacters: (
+    offset?: number,
+    limit?: number
+  ) => Promise<CharactersResponse>;
+  getCharacter: (id: string) => Promise<Character>;
+}
 
 enum MarvelSlugs {
   characters = 'characters',
@@ -12,57 +23,15 @@ enum MarvelSlugs {
   characterComics = 'characters/:characterId/comics'
 }
 
-interface Payload {
+interface MarvelPayload {
   ts: string;
   publicKey: string;
   hash: string;
 }
 
-// interface CharacterResult {
-//   id: string;
-//   name: string;
-//   image: {
-//     url: string;
-//     extension: string;
-//   };
-//   comics: {
-//     appearances: number;
-//     items: ComicResult[];
-//   };
-//   description?: string;
-// }
-
-function toCharacter(characterData: any): Character {
-  return {
-    id: characterData.id!,
-    name: characterData.name!,
-    image: {
-      url: characterData.thumbnail.path!,
-      extension: characterData.thumbnail.extension!
-    },
-    comics: {
-      appearances: characterData.comics?.available,
-      items: characterData.comics?.items?.map(toComic) ?? []
-    },
-    description: characterData.description
-  };
-}
-
-// interface ComicResult {
-//   id: string;
-//   title: string;
-// }
-
-function toComic(comicData: any): Comic {
-  console.log(comicData);
-  return {
-    name: comicData.name!
-  };
-}
-
 const baseUrl = 'https://gateway.marvel.com:443/v1/public';
 
-const buildPayload = (): Payload => {
+const buildPayload = (): MarvelPayload => {
   const ts = `${Date.now()}`;
   const privateKey = process.env.MARVEL_PRIVATE_KEY;
   const publicKey = process.env.MARVEL_PUBLIC_KEY;
@@ -80,14 +49,17 @@ const buildPayload = (): Payload => {
   };
 };
 
-const buildUrl = (slug: string, payload: Payload): string => {
+const buildUrl = (slug: string, payload: MarvelPayload): string => {
   const { ts, publicKey, hash } = payload;
   return `${baseUrl}/${slug}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 };
 
 export default function marvelAPIService(): MarvelAPIService {
   return {
-    getCharacters: async (offset = 99, limit = 20): Promise<Character[]> => {
+    getCharacters: async (
+      offset = 0,
+      limit = 20
+    ): Promise<CharactersResponse> => {
       const url = buildUrl(MarvelSlugs.characters, buildPayload());
       const res = await axios
         .get(`${url}&offset=${offset}&limit=${limit}`)
@@ -95,11 +67,18 @@ export default function marvelAPIService(): MarvelAPIService {
           console.log(error);
           throw error;
         });
+      console.log(res);
+      if (!res.data?.data?.results ?? !res.data?.data?.total) {
+        throw new Error(
+          'Un problème est survenu. Merci de réessayer ultérieurement.'
+        );
+      }
+      const { results, total } = res.data.data as GetCharactersApiResponse;
 
-      const results = res.data!.data!.results;
       const characters: Character[] = results.map(toCharacter);
-      console.log(characters);
-      return characters;
+      const hasMore = offset + limit < total;
+
+      return { characters, hasMore };
     },
 
     getCharacter: async (id: string): Promise<Character> => {
@@ -111,8 +90,13 @@ export default function marvelAPIService(): MarvelAPIService {
         console.log(error);
         throw error;
       });
-      console.log('getCharacterRes', res);
-      const result = res.data!.data!.results[0];
+      if (!res.data?.data?.results) {
+        throw new Error(
+          'Un problème est survenu. Merci de réessayer ultérieurement.'
+        );
+      }
+      console.log('res getCharacter', res.data?.data);
+      const result = res.data.data.results[0] as CharacterFromApiData;
 
       return toCharacter(result);
     }

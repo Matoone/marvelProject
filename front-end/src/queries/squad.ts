@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const getSquad = gql`
-  query getSquad {
-    characters {
+  query getSquad($userId: ID!) {
+    gameCharacters(userId: $userId) {
       id
       name
       image {

@@ -2,13 +2,11 @@ import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 
 interface AuthTokenObject {
-  id: number | undefined;
+  id: string | undefined;
 }
 
 export async function encrypt(password: string) {
-  const hashed = await hash(password, 8);
-
-  return hashed;
+  return await hash(password, 8);
 }
 
 export async function comparePasswords(
@@ -22,7 +20,7 @@ export async function comparePasswords(
   }
 }
 
-export function signToken(userId: number) {
+export function signToken(userId: string) {
   const token = sign(
     {
       id: userId
