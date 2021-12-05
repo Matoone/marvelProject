@@ -51,8 +51,8 @@ export default function GameCharacterCard({
     ? rules[loopState.status].label
     : "idle";
   return (
-    <div className="Hoverable">
-      <Card className="SquadCard" width={160}>
+    <div className="Hoverable" style={{ margin: 20 }}>
+      <Card className="SquadCard" width={200}>
         <CardHeader
           title={<H6 style={{ justifyContent: "center" }}>{character.name}</H6>}
           subtitle={<H6>{characterStatusLabel}</H6>}
@@ -78,7 +78,7 @@ export default function GameCharacterCard({
             }}
           >
             {Object.values(Place).map((v) => (
-              <Radio value={v} label={v} />
+              <Radio value={v} label={v} key={v} />
             ))}
           </RadioGroup>
           ;

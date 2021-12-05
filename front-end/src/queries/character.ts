@@ -1,13 +1,17 @@
 import { gql } from "@apollo/client";
 
 const getCharacters = gql`
-  query getCharacters {
-    characters {
-      id
-      name
-      image {
-        url
-        extension
+  query getCharacters($offset: Int!, $limit: Int!, $name: String) {
+    characters(offset: $offset, limit: $limit, name: $name) {
+      hasMore
+      marvelMessage
+      characters {
+        id
+        name
+        image {
+          url
+          extension
+        }
       }
     }
   }

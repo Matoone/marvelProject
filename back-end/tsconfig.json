@@ -124,9 +124,10 @@
     "noFallthroughCasesInSwitch": true,
     "target": "ES2020",
     "lib": ["esnext", "DOM"],
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "types": ["node"],
+    "baseUrl": "./src"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
-
 }

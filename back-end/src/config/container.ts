@@ -1,29 +1,20 @@
-import { userRepository } from '../data';
-import { userService } from '../services';
+import { UserRepository } from '../data';
+
 import { marvelAPIService } from '../services';
-import { User } from './model';
-import { Character, UserInput } from '../graphql/generated/types';
+import { MarvelAPIService } from '../services/marvelAPIService';
 
-interface MarvelAPIService {
-  getCharacters: (offset?: number, limit?: number) => Promise<Character[]>;
-  getCharacter: (id: string) => Promise<Character>;
-}
+import { userService } from '../services';
+import { UserService } from '../services/userService';
 
-interface UserService {
-  getUser: (id: string) => Promise<User>;
-  getUsers: (ids: string[]) => Promise<User[]>;
-  addUser: (userInput: UserInput) => Promise<string>;
-}
 interface MyContainer {
   userService: UserService;
   marvelAPIService: MarvelAPIService;
 }
 
-const container = {
-  userService: userService(userRepository),
-  marvelAPIService: marvelAPIService()
-} as const;
-
-//const Container = typeof container;
+const container = () =>
+  ({
+    userService: userService(new UserRepository()),
+    marvelAPIService: marvelAPIService()
+  } as MyContainer);
 
 export { container, MyContainer, MarvelAPIService, UserService };

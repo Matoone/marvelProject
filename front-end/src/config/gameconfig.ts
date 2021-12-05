@@ -9,7 +9,7 @@ export const placesStatus = {
 
 export const rules: Rules = {
   idle: {
-    label: "Doing nothing",
+    label: "Chilling...",
     iterations: () => 5000 / frameDuration,
   },
   move: {

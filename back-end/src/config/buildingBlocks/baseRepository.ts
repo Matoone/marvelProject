@@ -3,51 +3,19 @@ import { Identity } from './identity';
 import { NotFound } from './errors';
 
 export interface Repository<T extends Identity> {
-  /**
-   * Récupère un aggrégat depuis son identité.
-   * @param id
-   */
   getById(id: string): Promise<T>;
-
-  /**
-   * Récupère une liste d'aggrégat depuis leur identité.
-   * @param ids
-   */
   getByIds(...ids: string[]): Promise<T[]>;
-
-  /**
-   * Ajoute un ou plusieurs aggrégats à la couche de données.
-   * @param objects
-   */
   add(...objects: T[]): Promise<string[]>;
-
-  /**
-   * Modifie un ou plusieurs aggrégats dans notre couche de données.
-   * @param objects
-   */
-  save(...objects: T[]): Promise<void>;
-
-  /**
-   * Supprime un ou plusieurs aggrégats de la couche de données.
-   * @param objects
-   */
-  remove(...objects: T[]): Promise<void>;
+  save(...objects: T[]): Promise<string[]>;
+  remove(...objects: T[]): Promise<string[]>;
 }
-
-export interface IJoinTableParams<T extends Identity> {
-  name: string;
-  joinColumn: string;
-  toObject: (data: any) => T;
-  toData: (object: T) => any;
-}
-
 export abstract class KnexRepository<T extends Identity>
   implements Repository<T>
 {
   constructor(
     readonly tableName: string,
     readonly toObject: (snapshot: any) => T,
-    readonly toData: (object: T) => any,
+    readonly toData: (object: T) => any
   ) {}
   async getById(id: string): Promise<T> {
     const query = knexInstance
@@ -75,7 +43,7 @@ export abstract class KnexRepository<T extends Identity>
   async add(...objects: T[]): Promise<string[]> {
     const trx = await knexInstance.transaction();
     try {
-      const data = objects.map(this.toData)
+      const data = objects.map(this.toData);
 
       const ids: string[] = await trx(this.tableName)
         .insert(data)
@@ -90,10 +58,9 @@ export abstract class KnexRepository<T extends Identity>
       throw e;
     }
   }
-  async save(...objects: T[]): Promise<void> {
+  async save(...objects: T[]): Promise<string[]> {
     const trx = await knexInstance.transaction();
     try {
-
       await Promise.all(
         objects.map((obj) => {
           const { id, ...snapshot } = this.toData(obj as T);
@@ -101,13 +68,15 @@ export abstract class KnexRepository<T extends Identity>
         })
       );
       await trx.commit();
+
+      return objects.map((obj) => obj.id);
     } catch (e) {
       await trx.rollback();
       console.log(e);
       throw e;
     }
   }
-  async remove(...objects: T[]): Promise<void> {
+  async remove(...objects: T[]): Promise<string[]> {
     const trx = await knexInstance.transaction();
     try {
       await trx(this.tableName)
@@ -117,6 +86,8 @@ export abstract class KnexRepository<T extends Identity>
         )
         .delete();
       await trx.commit();
+
+      return objects.map((obj) => obj.id);
     } catch (e) {
       await trx.rollback();
       console.log(e);

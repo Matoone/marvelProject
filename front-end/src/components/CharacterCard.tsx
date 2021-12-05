@@ -13,19 +13,15 @@ const CharacterCard = ({ character }: { character: Character }) => {
   const history = useHistory();
   return (
     <div
-      className="Hoverable"
+      className="Hoverable CharCard"
       onClick={() => history.push(`/characters/${character.id}`)}
     >
-      <Card className="Card">
+      <Card className="Card" rounded>
         <CardHeader
-          title={
-            <H6 style={{ justifyContent: "center", display: "flex" }}>
-              {character.name}
-            </H6>
-          }
-          subtitle={<Subtitle2 secondary>Lorem ipsum dolor sit amet</Subtitle2>}
+          style={{ justifyContent: "center", display: "flex", height: 40 }}
+          title={<H6>{character.name}</H6>}
         />
-        <CardMedia dark src={buildImageUrl(character.imageUrl)} height={320} />
+        <CardMedia dark src={buildImageUrl(character.imageUrl)} height={270} />
       </Card>
     </div>
   );

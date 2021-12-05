@@ -1,13 +1,15 @@
 import { useQuery } from "@apollo/client";
-import { Col, Row } from "react-flexbox-grid";
+import { useContext } from "react";
+import { Row } from "react-flexbox-grid";
 import { useParams } from "react-router-dom";
-import { ProgressCircular } from "ui-neumorphism";
+import { H2, H5, ProgressCircular } from "ui-neumorphism";
+import CharacterDetailsCard from "../components/CharacterDetailsCard";
 import { getCharacterDetails } from "../queries";
 import { getCharacterDetails as getCharacterDetailsQuery } from "../queries/__generated__/getCharacterDetails";
-import { buildImageUrl } from "../utils";
-import { ImageResolutions } from "../utils/buildImageUrl";
+import { UserContext } from "../userContext";
 
 const CharacterDetails = () => {
+  const { marvelMessage } = useContext(UserContext);
   const { id }: { id: string } = useParams();
   const options = {
     variables: { id },
@@ -20,7 +22,7 @@ const CharacterDetails = () => {
 
   if (loading)
     return (
-      <Row center="xs">
+      <Row center="xs" data-testid="loading">
         <ProgressCircular
           indeterminate
           size={64}
@@ -33,46 +35,21 @@ const CharacterDetails = () => {
     console.log(error);
     return <Row center="xs">{`Error! ${error.message}`}</Row>;
   }
+  if (!data) {
+    return <Row center="xs">{`Error!`}</Row>;
+  }
   return (
-    (data && (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <h2 style={{ textAlign: "center", marginBottom: 20 }}>
-          {data!.character.name}
-        </h2>
-
+    <>
+      {marvelMessage && (
         <Row center="xs">
-          <Col xs={6}>
-            <Col style={{ marginBottom: 10 }}>
-              <span>
-                This character appears in {data.character.comics?.appearances}{" "}
-                comics globally.
-              </span>
-              {data.character?.comics?.appearances &&
-              data.character.comics.appearances > 0 ? (
-                <span> Here are the first three: </span>
-              ) : null}
-            </Col>
-            <Col style={{ marginBottom: 10 }}>
-              <ol>
-                {data.character.comics?.items
-                  ? data.character.comics.items
-                      .map((comic: any) => (
-                        <li key={comic.name}>{comic.name}</li>
-                      ))
-                      .filter((_comic: any, index: number) => index <= 2)
-                  : null}
-              </ol>
-            </Col>
-            {data.character.description ?? ""}
-            <img
-              style={{ height: 400 }}
-              src={buildImageUrl(data!.character.image, ImageResolutions.xl)}
-              alt="the character"
-            />
-          </Col>
+          <H5>{marvelMessage}</H5>
         </Row>
-      </div>
-    )) || <Row>{`Error!`}</Row>
+      )}
+      <Row center="xs">
+        <H2 style={{ marginBottom: 40 }}>Details</H2>
+      </Row>
+      {CharacterDetailsCard(data.character)}
+    </>
   );
 };
 
