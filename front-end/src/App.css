@@ -53,3 +53,15 @@ li {
   max-width: 400px;
   max-height: 600px;
 }
+
+.top-bar-button {
+  padding: 20;
+  min-width: 200;
+}
+
+.f-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}

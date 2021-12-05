@@ -69,7 +69,6 @@ export default function SignupLogin({
                 width={300}
                 style={{ justifySelf: "center" }}
                 onChange={(e: any) => {
-                  console.log(e);
                   setEmail(e.value);
                 }}
                 rules={[
@@ -88,7 +87,6 @@ export default function SignupLogin({
                 width={300}
                 style={{ justifySelf: "center" }}
                 onChange={(e: any) => {
-                  console.log(e);
                   setPassword(e.value);
                 }}
                 rules={[
@@ -117,7 +115,8 @@ export default function SignupLogin({
                       v.length > 5 || "Must be at least 6 characters",
                     (v: string) =>
                       !v.includes(" ") || "Cannot contain whitespace",
-                    (v: string) => v === password || "Both passwords must match",
+                    (v: string) =>
+                      v === password || "Both passwords must match",
                   ]}
                 />
               </Row>
@@ -155,18 +154,12 @@ export default function SignupLogin({
                   default:
                     throw new Error("unhandled mode for signupLogin component");
                 }
-                console.log("login action");
               }}
             >
               &nbsp;<span style={{ fontSize: "24px" }}>&#9729;</span>
               &nbsp;Go&nbsp;
             </Fab>
-            {/* <div>{localToken}</div> */}
           </CardContent>
-          {/* <div>
-            email: {email}
-            password: {password}
-          </div> */}
         </Card>
       </Col>
     </Row>

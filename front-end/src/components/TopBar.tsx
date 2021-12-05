@@ -12,15 +12,32 @@ const TopBar = () => {
   const renderBar = useCallback(() => {
     if (!token) {
       return (
-        <>
-          <Button onClick={() => history.push("/signup")}>Signup</Button>
-          <Button onClick={() => history.push("/login")}>Login</Button>{" "}
-        </>
+        <div className="f-center" style={{ minWidth: 260 }}>
+          <Button
+            className="top-bar-button"
+            style={{ minWidth: 100 }}
+            size="large"
+            onClick={() => history.push("/signup")}
+          >
+            Signup
+          </Button>
+          <Button
+            className="top-bar-button"
+            style={{ minWidth: 100 }}
+            size="large"
+            onClick={() => history.push("/login")}
+          >
+            Login
+          </Button>
+        </div>
       );
     } else {
       return (
-        <>
+        <div className="f-center" style={{ minWidth: 260 }}>
           <Button
+            className="top-bar-button"
+            style={{ minWidth: 100 }}
+            size="large"
             onClick={() => {
               setToken(null);
               history.push("/login");
@@ -28,21 +45,28 @@ const TopBar = () => {
           >
             Sign out
           </Button>
-          <Button onClick={() => history.push("/squad")}>Squad</Button>
-        </>
+          <Button
+            className="top-bar-button"
+            size="large"
+            style={{ minWidth: 100 }}
+            onClick={() => history.push("/squad")}
+          >
+            Squad
+          </Button>
+        </div>
       );
     }
   }, [history, token, setToken]);
   return (
     <Row between="xs" className="App-header">
       <div className="Hoverable" onClick={() => history.push("/")}>
-        <Col style={{ padding: 20 }} xs={4}>
-          <strong>MarvelProject</strong>
+        <Col style={{ padding: 20, fontSize: 30 }} xs={4}>
+          <strong style={{ color: "var(--primary)" }}>MarvelProject</strong>
         </Col>
       </div>
 
       <Col style={{ padding: 20 }} xs={4}>
-        <Row around="xs">{renderBar()}</Row>
+        <Row end="xs">{renderBar()}</Row>
       </Col>
     </Row>
   );

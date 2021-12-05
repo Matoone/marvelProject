@@ -7,7 +7,7 @@ const typeDefs = gql`
     hello: String!
     getUser(id: ID!): User!
     getUsers(ids: [ID!]!): [User!]!
-    characters(offset: Int!, limit: Int!): CharactersResponse!
+    characters(offset: Int!, limit: Int!, name: String): CharactersResponse!
     character(id: ID!): Character!
     gameCharacters(userId: ID!): [GameCharacter!]!
   }
@@ -75,6 +75,7 @@ const typeDefs = gql`
   type CharactersResponse {
     characters: [Character!]!
     hasMore: Boolean!
+    marvelMessage: String
   }
 `;
 

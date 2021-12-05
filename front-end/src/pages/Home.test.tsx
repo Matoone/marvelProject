@@ -3,25 +3,35 @@ import { act, render, screen } from "@testing-library/react";
 import { getCharacters } from "../queries";
 import Home from "./Home";
 
-const mockWithData = {
-  request: {
-    query: getCharacters,
-  },
-  result: {
-    data: {
-      characters: [
-        {
-          id: "1",
-          name: "Bob",
-          image: {
-            url: "http://www.test.co",
-            extension: "jpg",
-          },
-        },
-      ],
+const mockWithData = () =>
+  Array(5).fill({
+    request: {
+      query: getCharacters,
+      variables: {
+        offset: 0,
+        limit: 20,
+        name: "",
+      },
     },
-  },
-};
+
+    result: {
+      data: {
+        characters: {
+          hasMore: false,
+          characters: [
+            {
+              id: "1",
+              name: "Bob",
+              image: {
+                url: "http://www.test.co",
+                extension: "jpg",
+              },
+            },
+          ],
+        },
+      },
+    },
+  });
 
 const mockWithError = {
   request: {
@@ -34,7 +44,7 @@ const mockWithError = {
 test("Home page loading", () => {
   act(() => {
     const component = (
-      <MockedProvider mocks={[mockWithData]} addTypename={false}>
+      <MockedProvider mocks={[...mockWithData()]} addTypename={false}>
         <Home />
       </MockedProvider>
     );
@@ -49,14 +59,14 @@ test("Home page loading", () => {
 test("Home page data", async () => {
   act(() => {
     const component = (
-      <MockedProvider mocks={[mockWithData]} addTypename={false}>
+      <MockedProvider mocks={[...mockWithData()]} addTypename={false}>
         <Home />
       </MockedProvider>
     );
 
     render(component);
   });
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const toFind = screen.getByText("Bob");
   expect(toFind).toBeInTheDocument();
 });
@@ -71,7 +81,7 @@ test("Home page error", async () => {
 
     render(component);
   });
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const toFind = screen.getByText("Error! An error occurred");
   expect(toFind).toBeInTheDocument();
 });

@@ -27,6 +27,7 @@ export type CharactersResponse = {
   __typename?: 'CharactersResponse';
   characters: Array<Character>;
   hasMore: Scalars['Boolean'];
+  marvelMessage?: Maybe<Scalars['String']>;
 };
 
 export type Comic = {
@@ -88,6 +89,7 @@ export type QueryCharacterArgs = {
 
 export type QueryCharactersArgs = {
   limit: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
   offset: Scalars['Int'];
 };
 
@@ -257,6 +259,7 @@ export type CharacterResolvers<ContextType = any, ParentType extends ResolversPa
 export type CharactersResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CharactersResponse'] = ResolversParentTypes['CharactersResponse']> = ResolversObject<{
   characters?: Resolver<Array<ResolversTypes['Character']>, ParentType, ContextType>;
   hasMore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  marvelMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

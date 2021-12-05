@@ -11,11 +11,18 @@ import Home from "./pages/Home";
 import SignupLogin from "./pages/SignupLogin";
 import { UserContext } from "./userContext";
 import { useLocalStorage } from "./hooks";
+import { useState } from "react";
 
 function App() {
   // Similar to useState but first arg is key to the value in local storage.
   const [localToken, setLocalToken] = useLocalStorage("token", "");
-  const contextValue = { token: localToken, setToken: setLocalToken };
+  const [marvelMessage, setMarvelMessage] = useState<string | null>(null);
+  const contextValue = {
+    token: localToken,
+    setToken: setLocalToken,
+    marvelMessage: marvelMessage ?? undefined,
+    setMarvelMessage: setMarvelMessage,
+  };
 
   return (
     <UserContext.Provider value={contextValue}>

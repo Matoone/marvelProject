@@ -1,5 +1,5 @@
 import express, { Express } from 'express';
-//import helmet from 'helmet';
+import helmet from 'helmet';
 import { ApolloServer } from 'apollo-server-express';
 
 import typeDefs from './graphql/schema';
@@ -12,8 +12,8 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 const app: Express = express();
 
-//app.use(helmet());
-//app.use(express.json());
+app.use(helmet());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 async function startApolloServer() {

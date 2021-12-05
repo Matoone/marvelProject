@@ -6,6 +6,7 @@ export interface GetCharactersApiResponse {
   limit: number;
   total: number;
   results: CharacterFromApiData[];
+  attributionText?: string;
 }
 
 export interface CharacterFromApiData {

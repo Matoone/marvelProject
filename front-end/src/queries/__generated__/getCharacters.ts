@@ -23,6 +23,7 @@ export interface getCharacters_characters_characters {
 export interface getCharacters_characters {
   __typename: "CharactersResponse";
   hasMore: boolean;
+  marvelMessage: string | null;
   characters: getCharacters_characters_characters[];
 }
 
@@ -33,4 +34,5 @@ export interface getCharacters {
 export interface getCharactersVariables {
   offset: number;
   limit: number;
+  name?: string | null;
 }

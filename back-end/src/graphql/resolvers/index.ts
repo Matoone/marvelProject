@@ -25,8 +25,8 @@ const resolvers: Resolvers = {
       ctx.userService.getUser(id),
     getUsers: (_, { ids }, { ctx }: { ctx: MyContainer }) =>
       ctx.userService.getUsers(ids),
-    characters: (_, { offset, limit }, { ctx }: { ctx: MyContainer }) =>
-      ctx.marvelAPIService.getCharacters(offset, limit),
+    characters: (_, { offset, limit, name }, { ctx }: { ctx: MyContainer }) =>
+      ctx.marvelAPIService.getCharacters(offset, limit, name ?? undefined),
     character: (_, { id }, { ctx }: { ctx: MyContainer }) => {
       return ctx.marvelAPIService.getCharacter(id);
     },
