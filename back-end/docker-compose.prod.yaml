@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  hp-back-end:
+    build:
+      target: hp-back-end-production
+      args:
+        - NODE_ENV=production
+        - DATABASE_URL=postgresql://postgres:postgres@db:5432/my_app_db_test
+    command: npm run dev
