@@ -4,9 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+require("dotenv").config();
+
+const ENVIRONMENT = process.env.NODE_ENV || "production";
+const backendUri =
+  ENVIRONMENT === "production"
+    ? "https://ec2-13-38-1-89.eu-west-3.compute.amazonaws.com/graphql"
+    : "http://localhost:4000/graphql";
 
 const client = new ApolloClient({
-  uri: "https://ec2-13-38-1-89.eu-west-3.compute.amazonaws.com/graphql",
+  uri: backendUri,
   cache: new InMemoryCache(),
 });
 
