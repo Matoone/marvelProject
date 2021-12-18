@@ -9,7 +9,7 @@ import { verifyToken } from './utils/auth';
 
 require('dotenv').config();
 
-const PORT = process.env.PORT || 4000;
+const PORT = 443;
 const app: Express = express();
 
 app.use(helmet());
