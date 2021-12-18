@@ -9,7 +9,7 @@ require("dotenv").config();
 const ENVIRONMENT = process.env.NODE_ENV || "production";
 const backendUri =
   ENVIRONMENT === "production"
-    ? "https://ec2-13-38-1-89.eu-west-3.compute.amazonaws.com/graphql"
+    ? "https://ec2-13-38-1-89.eu-west-3.compute.amazonaws.com:443/graphql"
     : "http://localhost:4000/graphql";
 
 const client = new ApolloClient({

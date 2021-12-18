@@ -18,7 +18,11 @@ require('dotenv').config();
 
 const configurations = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: true, port: 443, hostname: 'example.com' },
+  production: {
+    ssl: true,
+    port: 443,
+    hostname: 'ec2-13-38-1-89.eu-west-3.compute.amazonaws.com'
+  },
   development: { ssl: false, port: 4000, hostname: 'localhost' }
 };
 
@@ -56,8 +60,8 @@ async function startApolloServer() {
     // Make sure these files are secured.
     httpServer = https.createServer(
       {
-        key: fs.readFileSync(`../ssl/${ENVIRONMENT}/key.pem`),
-        cert: fs.readFileSync(`../ssl/${ENVIRONMENT}/cert.pem`)
+        key: fs.readFileSync(`./ssl/${ENVIRONMENT}/key.pem`),
+        cert: fs.readFileSync(`./ssl/${ENVIRONMENT}/cert.pem`)
       },
 
       app

@@ -64,3 +64,5 @@ Your backend is running, connected with the db.
 
 
     "npm install && cross-env NODE_ENV=development concurrently \"npm run gen\" \"tsc --watch\" \"nodemon -q dist/index.js\"",
+
+    ssh -i "mykeypair.pem" ec2-user@ec2-13-38-1-89.eu-west-3.compute.amazonaws.com
