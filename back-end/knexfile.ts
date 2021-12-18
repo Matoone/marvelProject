@@ -85,6 +85,22 @@ const config: KnexConfig = {
     seeds: {
       directory: path.join(__dirname, '/src/config/db/seeds')
     }
+  },
+  production: {
+    client: 'postgresql',
+    connection: {
+      host: 'db',
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: path.join(__dirname, '/src/config/db/migrations')
+    },
+    seeds: {
+      directory: path.join(__dirname, '/src/config/db/seeds')
+    }
   }
 };
 
