@@ -160,10 +160,7 @@ export default function SignupLogin({
                 onClick={onSubmit}
                 style={{
                   fontSize: "24px",
-                  // display: "flex",
-                  // padding: "10rem",
                   padding: "1rem",
-                  // justifyContent: "center",
                 }}
               >
                 <span style={{ fontSize: "24px" }}>🚀 </span>
