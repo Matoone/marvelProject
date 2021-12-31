@@ -11,11 +11,6 @@ import https from 'https';
 import fs from 'fs';
 require('dotenv').config();
 
-// const options = {
-//   key: fs.readFileSync('/srv/www/keys/my-site-key.pem'),
-//   cert: fs.readFileSync('/srv/www/keys/chain.pem')
-// };
-
 const configurations = {
   // Note: You may need sudo to run on port 443
   production: { ssl: true, port: 443, hostname: 'example.com' },
@@ -34,7 +29,7 @@ async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: async ({ req }) => {
+    context: async ({ req }: { req: any }) => {
       const token = req.headers.authorization || null;
       let user = null;
       const containerInstance = container();

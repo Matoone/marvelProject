@@ -84,7 +84,7 @@ export default function marvelAPIService(): MarvelAPIService {
         limit,
         nameStartsWith: name
       });
-      const res = await axios.get(url).catch((error) => {
+      const res = await axios.get(url).catch((error: Error) => {
         console.log(error);
         throw error;
       });
@@ -115,7 +115,7 @@ export default function marvelAPIService(): MarvelAPIService {
         buildPayload(),
         {}
       );
-      const res = await axios.get(`${url}`).catch((error) => {
+      const res = await axios.get(`${url}`).catch((error: Error) => {
         console.log(error);
         throw error;
       });
