@@ -1,12 +1,10 @@
 import { Col, Row } from "react-flexbox-grid";
 import CharacterCard from "./CharacterCard";
 import { getCharacters_characters } from "../queries/__generated__/getCharacters";
-import { useEffect, useState } from "react";
-import { debounce } from "lodash";
+import { useEffect } from "react";
 
 export default function CharacterCardsList({
   characters,
-
   onLoadMore,
 }: {
   characters: getCharacters_characters["characters"];

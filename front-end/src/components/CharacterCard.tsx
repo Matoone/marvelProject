@@ -1,7 +1,6 @@
-import { Row } from "react-flexbox-grid";
-import { Link, Route, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { buildImageUrl, CharacterImageData } from "../utils/buildImageUrl";
-import { Card, CardHeader, CardMedia, H6, Subtitle2 } from "ui-neumorphism";
+import { Card, CardHeader, H6 } from "ui-neumorphism";
 
 export interface Character {
   id: string;
@@ -21,7 +20,12 @@ const CharacterCard = ({ character }: { character: Character }) => {
           style={{ justifyContent: "center", display: "flex", height: 40 }}
           title={<H6>{character.name}</H6>}
         />
-        <CardMedia dark src={buildImageUrl(character.imageUrl)} height={270} />
+        <img
+          alt="character"
+          src={buildImageUrl(character.imageUrl)}
+          height={270}
+          style={{ backgroundSize: "auto 100%;" }}
+        />
       </Card>
     </div>
   );

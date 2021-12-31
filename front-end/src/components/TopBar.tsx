@@ -40,7 +40,7 @@ const TopBar = () => {
             size="large"
             onClick={() => {
               setToken(null);
-              history.push("/login");
+              history.replace("/login");
             }}
           >
             Sign out

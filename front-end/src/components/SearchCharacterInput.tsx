@@ -1,4 +1,3 @@
-import { SyntheticEvent, useState } from "react";
 import { Button, TextField } from "ui-neumorphism";
 
 export default function SearchCharacterInput({

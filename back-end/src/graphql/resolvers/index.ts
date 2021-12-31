@@ -8,7 +8,7 @@ const resolvers: Resolvers = {
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Représente une date au format ISO',
-    parseValue: (value) => {
+    parseValue: (value: string | number | Date) => {
       const date = new Date(value);
 
       if (!isFinite(date.getTime())) {
