@@ -16,6 +16,8 @@ You may need to restart vs code sometimes when you modify the graphql schema, bu
 
 This is first personal experimentation with this tool, just was curious...
 
+NB: always launch your backend first, and THEN your front-end then because the files are generated on back-end and copied to the front-end when launched.
+
 ### Layers
 
 Layers are meaned to keep every part of the backend abstract and modular. They don't need to know about each other. Dependency injection allows for easy testing with Mockups. (TODO...)
@@ -60,9 +62,3 @@ password: postgres
 
 Your backend is running, connected with the db.
 
-    "dev": "npm install && cross-env NODE_ENV=development && npm run gen && rimraf dist && concurrently \"tsc --watch\" \"nodemon -L dist/index.js\"",
-
-
-    "npm install && cross-env NODE_ENV=development concurrently \"npm run gen\" \"tsc --watch\" \"nodemon -q dist/index.js\"",
-
-    ssh -i "mykeypair.pem" ec2-user@ec2-13-38-1-89.eu-west-3.compute.amazonaws.com
