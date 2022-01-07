@@ -55,7 +55,7 @@ password: postgres
 
 7. In another terminal tab, use "$docker ps" to copy the ContainerId(left field) of your backend-container (must be "back-end_hp-back-end" or very close).
 
-8. Use "$docker exec -it <YourContainerId> /bin/bash" to enter in bash on the container.
+8. Use "$docker exec -it YourContainerId /bin/bash" to enter in bash on the container.
 
 9. In this bash use "$knex migrate:latest" to pass the existing migrations on the dev db.
    To use knex related cli commands (rollbacks, ...) you may need to enter, use this procedure.
